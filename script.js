@@ -1,18 +1,11 @@
 let storedCities = JSON.parse(localStorage.getItem('cities'));
 if(!storedCities) { 
-    storedCities = ['Philadelphia', 'Cleveland'];
+    storedCities = [];
     localStorage.setItem('cities', JSON.stringify(storedCities));
 }
 
-// Render buttons for all the previously searched cities on page load
-renderButtons();
-// Add dates tot eh five day forecast cards
-for (let i = 1; i < 6; i++) {
-    $("#date-" + i).text(moment().add(1, 'day').format("MM/DD/YYYY"));
-    $("#icon-" + i).html("<img src='' alt=''>");
-    $("#temp-" + i).text("Temp: ");
-    $("#humidity-" + i).text("Humidity: ");
-}
+// Render buttons for all the previously searched cities on page load and add dates to the five day forecast cards
+renderPage();
 
 function showWeather(city) {
     let queryURL = "https://cors-anywhere.herokuapp.com/" + "api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=8feefe66bd34849fd79212829a1c0538";
@@ -64,7 +57,8 @@ function showWeather(city) {
 
 }
 
-function renderButtons() {
+function renderPage() {
+    // Render buttons
     storedCities = JSON.parse(localStorage.getItem('cities'));
     for (let j = 0; j < storedCities.length; j++) {
         let newButton = $("<button type='button' class='btn btn-info btn-block ml-2 cityButton'></button>");
@@ -72,10 +66,14 @@ function renderButtons() {
         newButton.attr("data-city", storedCities[j])
         $("#city-buttons").prepend(newButton);
     }
+    // Add dates to five-day forecast cards
+    for (let i = 1; i < 6; i++) {
+        $("#date-" + i).text(moment().add(1, 'day').format("MM/DD/YYYY"));
+    }    
 }
 
-// Click one fo the existing city buttons
-$(".cityButton").on("click", function () {
+// Click one of the existing city buttons
+$("#city-buttons").on("click", ".cityButton", function () {
     let newCity = $(this).attr("data-city");
     console.log(newCity);
     showWeather(newCity);
@@ -87,8 +85,13 @@ $("#search-submit").on("click", function () {
     console.log(newCity);
     showWeather(newCity);
     if(storedCities.indexOf(newCity) === -1) {
+        // Add the city to the array of cities in localStorage
         storedCities.push(newCity);
         localStorage.setItem('cities', JSON.stringify(storedCities));
-        renderButtons();
+        // Build and prepend a new button for the new city
+        let newButton = $("<button type='button' class='btn btn-info btn-block ml-2 cityButton'></button>");
+        newButton.text(newCity);
+        newButton.attr("data-city", newCity)
+        $("#city-buttons").prepend(newButton);
     }
 });
