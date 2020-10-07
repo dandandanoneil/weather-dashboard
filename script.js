@@ -8,16 +8,16 @@ if(!storedCities) {
 renderPage();
 
 function showWeather(city) {
-    let queryURL = "https://cors-anywhere.herokuapp.com/" + "api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=8feefe66bd34849fd79212829a1c0538";
+    let todayURL = "https://cors-anywhere.herokuapp.com/" + "api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=8feefe66bd34849fd79212829a1c0538";
+    console.log("Today's Weather URL: ", todayURL);
 
     // Display a "Loading" message so they don't get impatient 
     $("#city-date-icon").text("Loading weather data...");
-    console.log(queryURL);
     // Clear previous city's weather data from html
     $("#temperature").text("Temperature: ");
     $("#humidity").text("Humidity: ");
     $("#wind-speed").text("Wind Speed: ");
-    $("#humidity").text("Humidity: ");
+    $("#humidity").text("Humidity: ");    
     for (let i = 1; i < 6; i++) {
         $("#icon-" + i).html("<img src='' alt=''>");
         $("#temp-" + i).text("Temp: ");
@@ -27,62 +27,75 @@ function showWeather(city) {
 
     // Send a request to the forecast weather API and display the results
     $.ajax({
-        url: queryURL,
+        url: todayURL,
         method: "GET"
-    }).then(function(response) {
+    }).then(function(weather) {
         // Log the returned object
-        console.log(response);
-        // Add right now's data to the "Today" card html
+        console.log("Weather:", weather);
+        // Add the data to the "Today" card html
         $("#city-date-icon").html(
-            response.city.name + 
-            " (" + formatDate(response.list[0].dt_txt) + ") " + 
-            "<img src='http://openweathermap.org/img/w/" + response.list[0].weather[0].icon + ".png' alt='Weather icon'>");
-        $("#temperature").text("Temperature: " + response.list[0].main.temp + "°F");
-        $("#humidity").text("Humidity: " + response.list[0].main.humidity + "%");
-        $("#wind-speed").text("Wind Speed: " + response.list[0].wind.speed + "%");
-        $("#humidity").text("Humidity: " + response.list[0].main.humidity + "%");
-        // Add the data to the "Five-Day Forecast" card html by jumping ahead 8 3-hour forecast blocks (so each day is showing the forecast for 24 hours from now, or 48, or 72, etc.)
-        for (let i = 1; i < 6; i++) {
-            $("#date-" + i).text(formatDate(response.list[i*8-1].dt_txt));
-            $("#icon-" + i).html("<img src='http://openweathermap.org/img/w/" + response.list[i*8-1].weather[0].icon + ".png' alt='Weather icon'>");
-            $("#temp-" + i).text("Temp: " + response.list[i*8-1].main.temp + "°F");
-            $("#humidity-" + i).text("Humidity: " + response.list[i*8-1].main.humidity + "%");
-        }
+            weather.name + 
+            " (" + moment(weather.dt * 1000).format("MM/DD/YYYY") + ") " + 
+            "<img src='http://openweathermap.org/img/w/" + weather.weather[0].icon + ".png' alt='Weather icon'>");
+        $("#temperature").text("Temperature: " + weather.main.temp + "°F");
+        $("#humidity").text("Humidity: " + weather.main.humidity + "%");
+        $("#wind-speed").text("Wind Speed: " + weather.wind.speed + "%");
+        $("#humidity").text("Humidity: " + weather.main.humidity + "%");
+        
+        // Using the latitude and longitude from the 'weather' object, create a request for the daily forecast (which includes today's UV Index) & display the result
+        let lat = weather.coord.lat;
+        let lon = weather.coord.lon;
+        let forecastURL = "https://cors-anywhere.herokuapp.com/" + "api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=current,minutely,hourly&units=imperial&appid=8feefe66bd34849fd79212829a1c0538";
+        console.log("Five-Day Forecast URL: ", forecastURL);
+
+        $.ajax({
+            url: forecastURL,
+            method: "GET"
+        }).then(function(forecast) {
+            // Log the returned object
+            console.log("Forecast:", forecast);
+
+            // Add the data to the "Today" card html
+            $("#uv-index").text("UV Index: " + forecast.daily[0].uvi);
+            
+            // Add the data to the "Five-Day Forecast" card html
+            for (let i = 1; i < 6; i++) {
+                $("#date-" + i).text(moment(forecast.daily[i].dt * 1000).format("MM/DD/YYYY"));
+                $("#icon-" + i).html("<img src='http://openweathermap.org/img/w/" + forecast.daily[i].weather[0].icon + ".png' alt='Weather icon'>");
+                $("#temp-" + i).text("Temp: " + forecast.daily[i].temp.day + "°F");
+                $("#humidity-" + i).text("Humidity: " + forecast.daily[i].humidity + "%");
+            }
+        });
+        
     });
-
-    // Takes a date from the weather API in the format "2020-10-07 18:00:00" and returns "(10/07/2020)"
-    function formatDate(date) {
-        return date.substr(5, 2) + "/" + date.substr(8, 2) + "/" + date.substr(0, 4);
-    }
-
 }
 
 function renderPage() {
     // Render buttons
     storedCities = JSON.parse(localStorage.getItem('cities'));
     for (let j = 0; j < storedCities.length; j++) {
-        let newButton = $("<button type='button' class='btn btn-info btn-block ml-2 cityButton'></button>");
+        let newButton = $("<button type='button' class='btn btn-warning btn-block ml-2 cityButton'></button>");
         newButton.text(storedCities[j]);
         newButton.attr("data-city", storedCities[j])
         $("#city-buttons").prepend(newButton);
     }
     // Add dates to five-day forecast cards
     for (let i = 1; i < 6; i++) {
-        $("#date-" + i).text(moment().add(1, 'day').format("MM/DD/YYYY"));
+        $("#date-" + i).text(moment().add(i, 'day').format("MM/DD/YYYY"));
     }    
 }
 
 // Click one of the existing city buttons
 $("#city-buttons").on("click", ".cityButton", function () {
     let newCity = $(this).attr("data-city");
-    console.log(newCity);
+    console.log("Loading weather for", newCity);
     showWeather(newCity);
 });
 
 // Search for a city using the search input
 $("#search-submit").on("click", function () {
     let newCity = $("#city-search").val();
-    console.log(newCity);
+    console.log("Loading weather for", newCity);
     showWeather(newCity);
     if(storedCities.indexOf(newCity) === -1) {
         // Add the city to the array of cities in localStorage
