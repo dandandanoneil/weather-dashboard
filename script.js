@@ -37,7 +37,7 @@ function showWeather(city) {
         $("#city-date-icon").html(
             weather.name + 
             " (" + moment(weather.dt * 1000).format("MM/DD/YYYY") + ") " + 
-            "<img src='http://openweathermap.org/img/w/" + weather.weather[0].icon + ".png' alt='Weather icon'>");
+            "<img src='https://openweathermap.org/img/w/" + weather.weather[0].icon + ".png' alt='Weather icon'>");
         $("#temperature").text("Temperature: " + weather.main.temp + "°F");
         $("#humidity").text("Humidity: " + weather.main.humidity + "%");
         $("#wind-speed").text("Wind Speed: " + weather.wind.speed + " mph");
@@ -62,7 +62,7 @@ function showWeather(city) {
             // Add the data to the "Five-Day Forecast" card html
             for (let i = 1; i < 6; i++) {
                 $("#date-" + i).text(moment(forecast.daily[i].dt * 1000).format("MM/DD/YYYY"));
-                $("#icon-" + i).html("<img src='http://openweathermap.org/img/w/" + forecast.daily[i].weather[0].icon + ".png' alt='Weather icon'>");
+                $("#icon-" + i).html("<img src='https://openweathermap.org/img/w/" + forecast.daily[i].weather[0].icon + ".png' alt='Weather icon'>");
                 $("#high-" + i).text("High: " + forecast.daily[i].temp.max + "°F");
                 $("#low-" + i).text("Low: " + forecast.daily[i].temp.min + "°F");
                 $("#humidity-" + i).text("Humidity: " + forecast.daily[i].humidity + "%");
