@@ -1,14 +1,36 @@
-let storedCities = localStorage.getItem('cities');
-if(!storedCities) { storedCities = ["Philadelphia"]; }
-
-//  Show weather data for the last city stored on page load
-showWeather(storedCities[storedCities.length - 1]);
+let storedCities = JSON.parse(localStorage.getItem('cities'));
+if(!storedCities) { 
+    storedCities = ['Philadelphia', 'Cleveland'];
+    localStorage.setItem('cities', JSON.stringify(storedCities));
+}
 
 // Render buttons for all the previously searched cities on page load
 renderButtons();
+// Add dates tot eh five day forecast cards
+for (let i = 1; i < 6; i++) {
+    $("#date-" + i).text(moment().add(1, 'day').format("MM/DD/YYYY"));
+    $("#icon-" + i).html("<img src='' alt=''>");
+    $("#temp-" + i).text("Temp: ");
+    $("#humidity-" + i).text("Humidity: ");
+}
 
 function showWeather(city) {
     let queryURL = "https://cors-anywhere.herokuapp.com/" + "api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=8feefe66bd34849fd79212829a1c0538";
+
+    // Display a "Loading" message so they don't get impatient 
+    $("#city-date-icon").text("Loading weather data...");
+    console.log(queryURL);
+    // Clear previous city's weather data from html
+    $("#temperature").text("Temperature: ");
+    $("#humidity").text("Humidity: ");
+    $("#wind-speed").text("Wind Speed: ");
+    $("#humidity").text("Humidity: ");
+    for (let i = 1; i < 6; i++) {
+        $("#icon-" + i).html("<img src='' alt=''>");
+        $("#temp-" + i).text("Temp: ");
+        $("#humidity-" + i).text("Humidity: ");
+    }
+
 
     // Send a request to the forecast weather API and display the results
     $.ajax({
@@ -43,5 +65,30 @@ function showWeather(city) {
 }
 
 function renderButtons() {
-
+    storedCities = JSON.parse(localStorage.getItem('cities'));
+    for (let j = 0; j < storedCities.length; j++) {
+        let newButton = $("<button type='button' class='btn btn-info btn-block ml-2 cityButton'></button>");
+        newButton.text(storedCities[j]);
+        newButton.attr("data-city", storedCities[j])
+        $("#city-buttons").prepend(newButton);
+    }
 }
+
+// Click one fo the existing city buttons
+$(".cityButton").on("click", function () {
+    let newCity = $(this).attr("data-city");
+    console.log(newCity);
+    showWeather(newCity);
+});
+
+// Search for a city using the search input
+$("#search-submit").on("click", function () {
+    let newCity = $("#city-search").val();
+    console.log(newCity);
+    showWeather(newCity);
+    if(storedCities.indexOf(newCity) === -1) {
+        storedCities.push(newCity);
+        localStorage.setItem('cities', JSON.stringify(storedCities));
+        renderButtons();
+    }
+});
