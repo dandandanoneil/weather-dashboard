@@ -20,11 +20,10 @@
     </div>
 
     <!-- Content -->
-    <div class="container">
       <div class="row">
-        <div class="col-3 bg-light">
+        <div class="col-md-3 bg-light">
           <!-- Search -->
-          <div class="input-group mt-3 mb-3">
+          <div class="input-group mt-3 mb-3 ml-2">
             <input type="search" class="form-control" id="city-search" placeholder="Search by city...">
             <button class="btn btn-primary my-2 my-sm-0" type="submit">
               <i class="fa fa-search"></i>
@@ -38,49 +37,49 @@
         </div>
 
         <!-- Results -->
-        <div class="col-9">
+        <div class="col-md-9">
           <!-- "Today" Card -->
-          <div id="today" class="card p-3 mt-3">
+          <div id="today" class="card p-3 m-3">
             <h3 id="city-date-icon">Search by City</h3>
             <h5 id="temperature">Temperature: </h5>
             <h5 id="humidity">Humidity: </h5>
             <h5 id="wind-speed">Wind Speed: </h5>
             <h5 id="heat-index">Heat Index: </h5>
           </div>
-          <!-- Five-Day Forecast Card -->
+          <!-- "Five-Day Forecast" Card -->
           <div id="five-day" class="m-3">
             <h4>Five-Day Forecast:</h4>
             <div class="row">
               <!-- Day 1 -->
-              <div class="col-2 card bg-primary text-white mr-3 p-3">
+              <div class="col-sm-2 card bg-primary text-white ml-3 mb-3 mr-1 p-3">
                 <div id="date-1"><!-- Date --></div>
                 <div id="icon-1"><!-- Icon --></div>
                 <div id="temp-1"><!-- Temperature --></div>
                 <div id="humidity-1"><!-- Humidity --></div>
               </div>
               <!-- Day 2 -->
-              <div class="col-2 card bg-primary text-white mr-3 p-3">
+              <div class="col-sm-2 card bg-primary text-white ml-3 mb-3 mr-1 p-3">
                 <div id="date-2"><!-- Date --></div>
                 <div id="icon-2"><!-- Icon --></div>
                 <div id="temp-2"><!-- Temperature --></div>
                 <div id="humidity-2"><!-- Humidity --></div>
               </div>
               <!-- Day 3 -->
-              <div class="col-2 card bg-primary text-white mr-3 p-3">
+              <div class="col-sm-2 card bg-primary text-white ml-3 mb-3 mr-1 p-3">
                 <div id="date-3"><!-- Date --></div>
                 <div id="icon-3"><!-- Icon --></div>
                 <div id="temp-3"><!-- Temperature --></div>
                 <div id="humidity-3"><!-- Humidity --></div>
               </div>
               <!-- Day 4 -->
-              <div class="col-2 card bg-primary text-white mr-3 p-3">
+              <div class="col-sm-2 card bg-primary text-white ml-3 mb-3 mr-1 p-3">
                 <div id="date-4"><!-- Date --></div>
                 <div id="icon-4"><!-- Icon --></div>
                 <div id="temp-4"><!-- Temperature --></div>
                 <div id="humidity-4"><!-- Humidity --></div>
               </div>
               <!-- Day 5 -->
-              <div class="col-2 card bg-primary text-white mr-3 p-3">
+              <div class="col-sm-2 card bg-primary text-white ml-3 mb-3 mr-1 p-3">
                 <div id="date-5"><!-- Date --></div>
                 <div id="icon-5"><!-- Icon --></div>
                 <div id="temp-5"><!-- Temperature --></div>
@@ -90,12 +89,14 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- My JavaScript -->
+    <script src="script.js"></script>
   </body>
 </html>
