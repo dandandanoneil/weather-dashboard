@@ -1,6 +1,6 @@
 let storedCities = JSON.parse(localStorage.getItem('cities'));
 if(!storedCities) { 
-    storedCities = [];
+    storedCities = ["Philadelphia"];
     localStorage.setItem('cities', JSON.stringify(storedCities));
 }
 
@@ -100,10 +100,9 @@ function renderPage() {
         newButton.attr("data-city", storedCities[j])
         $("#city-buttons").prepend(newButton);
     }
-    // Add dates to five-day forecast cards
-    for (let i = 1; i < 6; i++) {
-        $("#date-" + i).text(moment().add(i, 'day').format("MM/DD/YYYY"));
-    }    
+
+    // Show weather for last searched city
+    showWeather(storedCities[storedCities.length - 1]);
 }
 
 // Click one of the existing city buttons
