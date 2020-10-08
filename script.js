@@ -59,12 +59,21 @@ function showWeather(city) {
             // Add the data to the "Today" card html
             let uvIndex = forecast.daily[0].uvi;
             $("#uv-index").html("UV Index: <span id='uv-block' class='badge'>" + uvIndex + "</span>");
-            if(uvIndex < 3) {
-                $("#uv-block").addClass("badge-success");
-            } else if(uvIndex < 5) {
-                $("#uv-block").addClass("badge-warning");
+            if (uvIndex < 3) {
+                $("#uv-block").css("background-color", "#9dc604");
+                $("#uv-block").css("color", "white");
+            } else if (uvIndex < 6) {
+                $("#uv-block").css("background-color", "#fdbb10");
+                $("#uv-block").css("color", "white");
+            } else if (uvIndex < 8) {
+                $("#uv-block").css("background-color", "#f69114");
+                $("#uv-block").css("color", "white");
+            } else if (uvIndex < 11) {
+                $("#uv-block").css("background-color", "#f35026");
+                $("#uv-block").css("color", "white");
             } else {
-                $("#uv-block").addClass("badge-danger");
+                $("#uv-block").css("background-color", "#9b4cc7");
+                $("#uv-block").css("color", "white");
             }
             
             
