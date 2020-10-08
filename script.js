@@ -57,7 +57,17 @@ function showWeather(city) {
             console.log("Forecast:", forecast);
 
             // Add the data to the "Today" card html
-            $("#uv-index").text("UV Index: " + forecast.daily[0].uvi);
+            let uvIndex = forecast.daily[0].uvi;
+            $("#uv-index").html("UV Index: <span id='uv-block' class='badge'>" + uvIndex + "</span>");
+            if(uvIndex < 3) {
+                $("#uv-block").addClass("badge-success");
+            } else if(uvIndex < 5) {
+                $("#uv-block").addClass("badge-warning");
+            } else {
+                $("#uv-block").addClass("badge-danger");
+            }
+            
+            
             
             // Add the data to the "Five-Day Forecast" card html
             for (let i = 1; i < 6; i++) {
