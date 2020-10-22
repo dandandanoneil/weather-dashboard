@@ -10,4 +10,7 @@ The application shows current weather and a five day forecast including temperat
 ![Weather Dashboard screenshot](images/weather-dashboard.png)
 
   
+## License
+[MIT License](http://opensource.org/licenses/mit-license.php)
+
 > Written with [StackEdit](https://stackedit.io/).
